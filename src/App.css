@@ -19,6 +19,13 @@
   color: #303030;
 }
 
+/* Login-CSS Start */
+.login-page {
+  height: 100vh;
+}
+
+/* Login-CSS End */
+
 /* Navbar-CSS Start */
 .header {
   .navbar-brand .logo {

@@ -3,6 +3,7 @@ import Login from "../pages/auth/Login"
 import Dashboard from "../pages/dashboard/Dashboard"
 import AuthLayout from "../components/layout/AuthLayout"
 import MainLayout from "../components/layout/MainLayout"
+import ProtectedRoute from "./ProtectedRoute"
 
 const AppRoutes = () => {
     return (
@@ -11,7 +12,13 @@ const AppRoutes = () => {
             <Route element={<AuthLayout />}>
                 <Route path="/login" element={<Login />} />
             </Route>
-            <Route element={<MainLayout />}>
+            <Route
+                element={
+                    <ProtectedRoute>
+                        <MainLayout />
+                    </ProtectedRoute>
+                }
+            >
                 <Route path="/dashboard" element={<Dashboard />} />
             </Route>
         </Routes>

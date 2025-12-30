@@ -1,12 +1,13 @@
 import { Outlet } from "react-router-dom"
+import Header from "./Header"
 
 
-const MainLayout = ({ children }) => {
+const MainLayout = () => {
     return (
-        <div>
-            <h1>header</h1>
-            <main><Outlet /></main> 
-            <h1>footer</h1>
+        <div className="container-fluid">
+            <Header />
+            <main><Outlet /></main>
+            {/* <h1>footer</h1> */}
         </div>
     )
 }
