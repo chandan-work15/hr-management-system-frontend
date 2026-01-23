@@ -1,26 +1,57 @@
 import { Routes, Route, Navigate } from "react-router-dom"
 import Login from "../pages/auth/Login"
-import Dashboard from "../pages/dashboard/Dashboard"
+// import AdminDashboard from "../pages/dashboard/AdminDashboard"
 import AuthLayout from "../components/layout/AuthLayout"
 import MainLayout from "../components/layout/MainLayout"
 import ProtectedRoute from "./ProtectedRoute"
+// import EmployeeDashboard from "../pages/dashboard/EmployeeDashboard"
+import Unauthorized from "../pages/Unauthorized"
+import { lazy, Suspense } from "react"
+
+const AdminDashboard = lazy(() =>
+    import("../pages/dashboard/admin/AdminDashboard")
+);
+const EmployeeDashboard = lazy(() =>
+    import("../pages/dashboard/EmployeeDashboard")
+);
 
 const AppRoutes = () => {
     return (
         <Routes>
             <Route path="/" element={<Navigate to="/login" />} />
             <Route element={<AuthLayout />}>
-                <Route path="/login" element={<Login />} />
+                <Route index path="/login" element={<Login />} />
             </Route>
             <Route
+
                 element={
-                    <ProtectedRoute>
+                    <ProtectedRoute allowedRoles={["admin"]}>
                         <MainLayout />
                     </ProtectedRoute>
                 }
             >
-                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/admin/dashboard" element={
+                    <Suspense fallback={<div className="loader">Loading...</div>}>
+                        <AdminDashboard />
+                    </Suspense>
+                } />
             </Route>
+
+            {/* EMPLOYEE */}
+            <Route
+                element={
+                    <ProtectedRoute allowedRoles={["employee"]}>
+                        <MainLayout />
+                    </ProtectedRoute>
+                }
+            >
+                <Route path="/employee/dashboard" element={
+                    <Suspense fallback={<div className="loader">Loading...</div>}>
+                        <EmployeeDashboard />
+                    </Suspense>
+                } />
+            </Route>
+            <Route path="/unauthorized" element={<Unauthorized />} />
         </Routes>
     )
 }

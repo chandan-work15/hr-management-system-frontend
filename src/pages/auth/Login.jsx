@@ -1,24 +1,41 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { loginUser } from '../../services/authService'
-import { getToken, setToken } from '../../utils/auth'
 import Logo from '../../assets/images/logo.png'
+import { useLoginMutation } from '../../features/auth/authApi'
+import { setCredentials } from '../../features/auth/authSlice'
+import { useDispatch } from 'react-redux'
+import { setToken } from '../../utils/auth'
+import { decodeToken } from '../../utils/jwt'
 
 const Login = () => {
   const [form, setForm] = useState({ username: "", password: "" });
   const [error, setError] = useState("");
+  const [login, { isLoading }] = useLoginMutation();
   const navigate = useNavigate();
-
-  if (getToken()) navigate("/dashboard");
+  const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     try {
-      const data = await loginUser(form);
-      if (data?.token) {
-        setToken(data.token);
-        navigate("/dashboard", { replace: true });
+      const data = await login(form).unwrap();
+      console.log("login res", data);
+
+      const decoded = decodeToken(data.token);
+      console.log("decoded token", decoded);
+
+      dispatch(
+        setCredentials({
+          token: data.token,
+          role: decoded.role
+        })
+      );
+      setToken(data.token);
+
+      if (decoded.role === "admin") {
+        navigate("/admin/dashboard", { replace: true });
+      } else {
+        navigate("/employee/dashboard", { replace: true });
       }
     } catch (err) {
       setError("Invalid username or password");
@@ -34,7 +51,7 @@ const Login = () => {
               <div className="card border-0 rounded-5 shadow bg-ffffff94">
                 <div className="card-body p-3 p-md-4 p-xl-5">
                   <div className="text-center mb-3">
-                    <Link to="/hr-management-user/dashboard">
+                    <Link to="/hr-management-user/login">
                       <img src={Logo} alt="Logo" width="280" className='' />
                     </Link>
                   </div>
