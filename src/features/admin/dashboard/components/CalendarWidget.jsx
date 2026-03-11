@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import '../admin_css/CalendarWidget.css';
+import '../../../../assets/css/global_css/CalendarWidget.css';
 
 const CalendarWidget = () => {
 

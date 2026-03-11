@@ -7,12 +7,13 @@ import ProtectedRoute from "./ProtectedRoute"
 // import EmployeeDashboard from "../pages/dashboard/EmployeeDashboard"
 import Unauthorized from "../pages/Unauthorized"
 import { lazy, Suspense } from "react"
+import EmployeeList from "../features/admin/employee-management/EmployeeList"
 
 const AdminDashboard = lazy(() =>
-    import("../pages/dashboard/admin/AdminDashboard")
+    import("../features/admin/dashboard/AdminDashboard")
 );
 const EmployeeDashboard = lazy(() =>
-    import("../pages/dashboard/EmployeeDashboard")
+    import("../features/employee/dashboard/EmployeeDashboard")
 );
 
 const AppRoutes = () => {
@@ -33,6 +34,11 @@ const AppRoutes = () => {
                 <Route path="/admin/dashboard" element={
                     <Suspense fallback={<div className="loader">Loading...</div>}>
                         <AdminDashboard />
+                    </Suspense>
+                } />
+                <Route path="/admin/employee-list" element={
+                    <Suspense fallback={<div className="loader">Loading...</div>}>
+                        <EmployeeList />
                     </Suspense>
                 } />
             </Route>

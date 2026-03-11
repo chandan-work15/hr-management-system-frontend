@@ -53,7 +53,7 @@ const Header = () => {
                                             <NavLink className={getNavLinkClass} to="/admin/dashboard">Dashboard</NavLink>
                                         </li>
                                         <li className="nav-item">
-                                            <NavLink className={getNavLinkClass} to="/admin/employee">Employee</NavLink>
+                                            <NavLink className={getNavLinkClass} to="/admin/employee-list">Employee</NavLink>
                                         </li>
                                         <li className="nav-item dropdown">
                                             <Link className="nav-link dropdown-toggle me-1" to="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -140,10 +140,10 @@ const Header = () => {
                 <div className="offcanvas-body">
                     <ul className="navbar-nav ms-auto mb-2 mb-lg-0 bg-white rounded-5 p-1 me-1">
                         <li className="nav-item">
-                            <NavLink className={getNavLinkClass} to="/dashboard"><i className="fa-solid fa-gauge me-2"></i>Dashboard</NavLink>
+                            <NavLink className={getNavLinkClass} to="admin/dashboard"><i className="fa-solid fa-gauge me-2"></i>Dashboard</NavLink>
                         </li>
                         <li className="nav-item">
-                            <NavLink className={getNavLinkClass} to="/employee"><i className="fa-solid fa-users me-2"></i>Employee</NavLink>
+                            <NavLink className={getNavLinkClass} to="admin/employee-list"><i className="fa-solid fa-users me-2"></i>Employee</NavLink>
                         </li>
                         <li className="nav-item dropdown">
                             <Link className="nav-link dropdown-toggle me-1" to="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">

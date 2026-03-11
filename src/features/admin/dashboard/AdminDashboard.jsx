@@ -1,9 +1,20 @@
 import CalendarWidget from "./components/CalendarWidget";
 import LeaveRequestsTable from "./components/LeaveRequestsTable";
-import TotalAppImg from '.././../../assets/images/interviewImg.svg';
+import TotalAppImg from '../../../assets/images/interviewImg.svg';
 import StatCard from "./components/StatCard";
+import { useGetAdminStatsQuery } from "../api/dashboardApi";
 
 const AdminDashboard = () => {
+
+  const {
+    data: stats,
+    isLoading: statsLoading,
+    isError: statsError,
+  } = useGetAdminStatsQuery();
+
+  if (statsLoading) return <p>Loading dashboard...</p>;
+  if (statsError) return <p>Somthing went wrong.</p>;
+
   return (
     <>
       <div className="container-fluid">
@@ -26,7 +37,7 @@ const AdminDashboard = () => {
                             cardTitle="Present"
                             icon="fa-user-check"
                             iconColor="text-success"
-                            count="24"
+                            count={stats.totalPresent}
                           />
                         </div>
                         <div className="col-md-6 col-sm-6">
@@ -34,7 +45,7 @@ const AdminDashboard = () => {
                             cardTitle="Late Coming"
                             icon="fa-clock"
                             iconColor="text-warning"
-                            count="7"
+                            count={stats.totalLateComing}
                           />
                         </div>
                         <div className="col-md-6 col-sm-6">
@@ -42,15 +53,15 @@ const AdminDashboard = () => {
                             cardTitle="Absent"
                             icon="fa-circle-xmark"
                             iconColor="text-danger"
-                            count="3"
+                            count={stats.totalAbsent}
                           />
                         </div>
                         <div className="col-md-6 col-sm-6">
                           <StatCard
-                            cardTitle="Leave Apply"
+                            cardTitle="Leave Applications"
                             icon="fa-umbrella-beach"
                             iconColor="text-primary"
-                            count="3"
+                            count={stats.totalLeaveApplications}
                           />
                         </div>
                       </div>

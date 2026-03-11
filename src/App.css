@@ -29,7 +29,7 @@
 /* Navbar-CSS Start */
 .header {
   .navbar-brand .logo {
-    width: 280px;
+    height: 70px;
   }
 
   .navbar-expand-lg .navbar-nav .nav-link {
