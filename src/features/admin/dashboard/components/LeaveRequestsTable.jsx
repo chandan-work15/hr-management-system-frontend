@@ -1,5 +1,6 @@
 import React from 'react'
 import { useGetTodayLeaveRequestsQuery } from '../../api/dashboardApi';
+import { formatDate } from '../../../../utils/formatDate';
 
 const LeaveRequestsTable = () => {
 
@@ -25,19 +26,20 @@ const LeaveRequestsTable = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {LeaveRequestsTableData.map((request, index) => (
-                            <tr key={request._id}>
-                                <th scope="row">{index + 1}</th>
-                                <td>{request.user_id.name}</td>
-                                <td>{request.leave_type}</td>
-                                <td>{request.from_date}</td>
-                                <td>{request.to_date}</td>
-                                <td>
-                                    <span
-                                        className={`badge rounded-pill pb-2 ${request.status === 'approved' ? 'bg-success' : request.status === 'rejected' ? 'bg-danger' : 'bg-warning'}`}>{request.status}</span>
-                                </td>
-                            </tr>
-                        ))}
+                        {LeaveRequestsTableData?.data?.applications?.filter((request) => request.status === 'pending')
+                            .map((request, index) => (
+                                <tr key={request._id}>
+                                    <th scope="row">{index + 1}</th>
+                                    <td>{request.user_id.name}</td>
+                                    <td>{request.leave_type}</td>
+                                    <td>{formatDate(request.from_date)}</td>
+                                    <td>{formatDate(request.to_date)}</td>
+                                    <td>
+                                        <span
+                                            className={`badge rounded-pill pb-2 ${request.status === 'approved' ? 'bg-success' : request.status === 'rejected' ? 'bg-danger' : 'bg-warning'}`}>{request.status}</span>
+                                    </td>
+                                </tr>
+                            ))}
                     </tbody>
                 </table>
             </div>

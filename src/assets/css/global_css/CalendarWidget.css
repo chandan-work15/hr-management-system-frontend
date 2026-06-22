@@ -27,7 +27,7 @@
     p,
     a,
     span {
-        color: #263859;
+        color: #212529;
     }
 
     .icon {
@@ -46,6 +46,7 @@
         display: block;
         line-height: 40px;
         margin: 0;
+        font-size: 18px;
         font-family: sans-serif;
         text-align: center;
         border-top-left-radius: 5px;
@@ -67,11 +68,11 @@
         align-items: center;
         justify-content: center;
         transition: 0.3s;
-        border: 2px solid #263859;
+        border: 2px solid #212529;
     }
 
     .arrow-btn:hover {
-        background: #16417e;
+        background: #212529;
 
         i {
             color: #fff;
@@ -90,7 +91,7 @@
 
     .icon {
         font-size: 18px;
-        color: #263859;
+        color: #212529;
     }
 
     .arrow-btn:hover .icon {
@@ -111,6 +112,7 @@
 
     .calendar a {
         font-size: 17px;
+        font-weight: 500;
         display: block;
         line-height: 38px;
         text-align: center;
@@ -124,8 +126,9 @@
     }
 
     .calendar th {
+        font-size: 19px;
         font-weight: bold;
-        color: #222a37;
+        color: #ca2828;
         font-family: sans-serif;
     }
 
@@ -134,24 +137,33 @@
         border-radius: 50%;
     }
 
-    .calendar td:hover {
+    .calendar td a {
+        width: 40px;
+        height: 40px;
+        margin: 5px auto;
+        border: 1px solid transparent;
+    }
+
+    .calendar td a:hover {
         background: #d3def3;
         border: 1px solid #263859;
         border-radius: 50%;
     }
 
     /* SELECTED DAY */
-    .selectedDay {
+    .selectedDay a {
         background: #d9605a;
         border-radius: 50%;
+        border: 1px solid #b94e4e;
     }
 
     .selectedDay a {
         color: white;
     }
 
-    .selectedDay:hover {
-        background: #b94e4e;
+    .selectedDay a:hover {
+        background: #b94e4e !important;
+        border: 1px solid #b94e4e !important;
     }
 
     /* DISABLED DAYS */

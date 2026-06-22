@@ -3,19 +3,27 @@ import { apiSlice } from "../../../redux/apiSlice";
 export const employeeApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getEmployees: builder.query({
-      query: () => "/users",
+      query: ({
+        page = 1,
+        limit = 5,
+        search = "",
+        sortField = "",
+        sortOrder = "asc",
+        role = "",
+      }) =>
+        `/v1/users?page=${page}&limit=${limit}&search=${search}&sortField=${sortField}&sortOrder=${sortOrder}&role=${role}`,
       providesTags: ["Employees"],
     }),
     deleteEmployee: builder.mutation({
       query: (id) => ({
-        url: `/users/${id}`,
+        url: `/v1/users/${id}`,
         method: "DELETE",
       }),
       invalidatesTags: ["Employees"],
     }),
     updateEmployee: builder.mutation({
       query: ({ id, body }) => ({
-        url: `/users/${id}`,
+        url: `/v1/users/${id}`,
         method: "PUT",
         body,
       }),
@@ -23,11 +31,12 @@ export const employeeApi = apiSlice.injectEndpoints({
     }),
     addEmployee: builder.mutation({
       query: (employeeData) => ({
-        url: "/users",
-        method:"POST",
+        url: "/v1/users",
+        method: "POST",
         body: employeeData,
       }),
-      invalidatesTags:["Employees"]
+      providesTags: ["Employees"],
+      invalidatesTags: ["Employees"],
     }),
   }),
 });
@@ -36,5 +45,5 @@ export const {
   useGetEmployeesQuery,
   useDeleteEmployeeMutation,
   useUpdateEmployeeMutation,
-  useAddEmployeeMutation
+  useAddEmployeeMutation,
 } = employeeApi;

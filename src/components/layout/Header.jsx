@@ -6,7 +6,7 @@ import { logout } from '../../features/auth/authSlice';
 
 const Header = () => {
     const navigate = useNavigate();
-    const dispatch = useDispatch
+    const dispatch = useDispatch();
 
     const getNavLinkClass = ({ isActive }) =>
         isActive ? "nav-link me-1 active fw-bold text-light bg-dark rounded-5 px-3" : "nav-link me-1";
@@ -16,8 +16,8 @@ const Header = () => {
     )
 
     const handleLogout = () => {
-        dispatch(logout())
         clearToken();
+        dispatch(logout());
         navigate("/login", { replace: true });
     }
 
@@ -53,9 +53,12 @@ const Header = () => {
                                             <NavLink className={getNavLinkClass} to="/admin/dashboard">Dashboard</NavLink>
                                         </li>
                                         <li className="nav-item">
-                                            <NavLink className={getNavLinkClass} to="/admin/employee-list">Employee</NavLink>
+                                            <NavLink className={getNavLinkClass} to="/admin/employee-list">Employees</NavLink>
                                         </li>
-                                        <li className="nav-item dropdown">
+                                        <li className="nav-item">
+                                            <NavLink className={getNavLinkClass} to="/admin/attendance">Attendance</NavLink>
+                                        </li>
+                                        {/* <li className="nav-item dropdown">
                                             <Link className="nav-link dropdown-toggle me-1" to="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                 Attendance
                                             </Link>
@@ -64,7 +67,7 @@ const Header = () => {
                                                 <li><NavLink className="dropdown-item" to="/admin/monthly-attendance">Monthly Attendance</NavLink></li>
                                                 <li><NavLink className="dropdown-item" to="/admin/edit-attendance">Edit Attendance</NavLink></li>
                                             </ul>
-                                        </li>
+                                        </li> */}
                                         <li className="nav-item">
                                             <NavLink className={getNavLinkClass} to="/admin/leave-request">Requests</NavLink>
                                         </li>
@@ -150,25 +153,25 @@ const Header = () => {
                                 <i className="fa-solid fa-clipboard-user me-2"></i>Attendance
                             </Link>
                             <ul className="dropdown-menu">
-                                <li><NavLink className="dropdown-item" to="/attendance">Take Attendance</NavLink></li>
-                                <li><NavLink className="dropdown-item" to="/monthly-attendance">Monthly Attendance</NavLink></li>
-                                <li><NavLink className="dropdown-item" to="/edit-attendance">Edit Attendance</NavLink></li>
+                                <li><NavLink className="dropdown-item" to="admin/attendance">Take Attendance</NavLink></li>
+                                <li><NavLink className="dropdown-item" to="admin/monthly-attendance">Monthly Attendance</NavLink></li>
+                                <li><NavLink className="dropdown-item" to="admin/edit-attendance">Edit Attendance</NavLink></li>
                             </ul>
                         </li>
                         <li className="nav-item">
-                            <NavLink className={getNavLinkClass} to="/leave-request"><i className="fa-solid fa-hand me-2"></i>Requests</NavLink>
+                            <NavLink className={getNavLinkClass} to="admin/leave-request"><i className="fa-solid fa-hand me-2"></i>Requests</NavLink>
                         </li>
                         {/* <li className="nav-item">
                                     <NavLink className={getNavLinkClass} to="#">Hiring</NavLink>
                                 </li> */}
                         <li className="nav-item">
-                            <NavLink className={getNavLinkClass} to="/salary"><i className="fa-solid fa-wallet me-2"></i>Salary</NavLink>
+                            <NavLink className={getNavLinkClass} to="admin/salary"><i className="fa-solid fa-wallet me-2"></i>Salary</NavLink>
                         </li>
                         {/* <li className="nav-item">
                                     <NavLink className={getNavLinkClass} to="#">Calendar</NavLink>
                                 </li> */}
                         <li className="nav-item">
-                            <NavLink className={getNavLinkClass} to="/archives"><i className="fa-solid fa-box-archive me-2"></i>Archives</NavLink>
+                            <NavLink className={getNavLinkClass} to="admin/archives"><i className="fa-solid fa-box-archive me-2"></i>Archives</NavLink>
                         </li>
                         <li className="nav-item me-1">
                             <Link className="nav-link" to="#"><i className="fa-solid fa-gear me-2"></i>Settings</Link>
