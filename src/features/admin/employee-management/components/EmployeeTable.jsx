@@ -5,24 +5,25 @@ import ConfirmationModal from '../../../../components/common/ConfirmationModal';
 import { useGetEmployeesQuery } from "../../api/employeeApi";
 import EditEmployeeModal from './EditEmployeeModal';
 import { useUpdateEmployeeMutation } from '../../api/employeeApi';
+import { formatDate } from '../../../../utils/formatDate';
 
-const EmployeeTable = () => {
+const EmployeeTable = ({ page, search, setPage, sortField, setSortField, sortOrder, setSortOrder, roleFilter }) => {
 
     const [showModal, setShowModal] = useState(false);
     const [selectedId, setSelectedId] = useState(null);
-    const { data, isLoading, isError } = useGetEmployeesQuery();
+    const { data, isLoading, isError } = useGetEmployeesQuery({
+        page,
+        limit: 5,
+        search,
+        sortField,
+        sortOrder,
+        role: roleFilter,
+    });
     const employees = data || [];
     const [showEditModal, setShowEditModal] = useState(false);
     const [selectedEmployee, setSelectedEmployee] = useState(null);
     const [updateEmployee, { isUpdating }] = useUpdateEmployeeMutation();
-
-
     const [deleteEmployee, { isDeleting }] = useDeleteEmployeeMutation();
-
-    const handleDelete = (id) => {
-        setSelectedId(id);
-        setShowModal(true);
-    };
 
     const handleUpdate = async (formData) => {
         try {
@@ -35,6 +36,11 @@ const EmployeeTable = () => {
             console.error("Update failed:", error);
         }
     }
+
+    const handleDelete = (id) => {
+        setSelectedId(id);
+        setShowModal(true);
+    };
 
     const confirmDelete = async () => {
         try {
@@ -55,28 +61,131 @@ const EmployeeTable = () => {
                     <thead>
                         <tr className="table-warning">
                             <th>#</th>
-                            <th>Name</th>
-                            <th>User Name</th>
-                            <th>Device Id</th>
-                            <th>Job Title</th>
-                            <th>Department</th>
-                            <th>Site</th>
-                            <th>Salary</th>
-                            <th>Start Date</th>
+                            <th
+                                style={{ cursor: "pointer" }}
+                                onClick={() => {
+                                    if (sortField === "name") {
+                                        setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+                                    } else {
+                                        setSortField("name");
+                                        setSortOrder("asc");
+                                    }
+                                }}
+                            >
+                                Name {sortField === "name" && (sortOrder === "asc" ? "↑" : "↓")}
+                            </th>
+
+                            <th
+                                style={{ cursor: "pointer" }}
+                                onClick={() => {
+                                    if (sortField === "username") {
+                                        setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+                                    } else {
+                                        setSortField("username");
+                                        setSortOrder("asc");
+                                    }
+                                }}
+                            >
+                                User Name {sortField === "username" && (sortOrder === "asc" ? "↑" : "↓")}
+                            </th>
+
+                            <th
+                                style={{ cursor: "pointer" }}
+                                onClick={() => {
+                                    if (sortField === "device_id") {
+                                        setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+                                    } else {
+                                        setSortField("device_id");
+                                        setSortOrder("asc");
+                                    }
+                                }}
+                            >
+                                Device Id {sortField === "device_id" && (sortOrder === "asc" ? "↑" : "↓")}
+                            </th>
+
+                            <th
+                                style={{ cursor: "pointer" }}
+                                onClick={() => {
+                                    if (sortField === "role") {
+                                        setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+                                    } else {
+                                        setSortField("role");
+                                        setSortOrder("asc");
+                                    }
+                                }}
+                            >
+                                Job Title {sortField === "role" && (sortOrder === "asc" ? "↑" : "↓")}
+                            </th>
+
+                            {/* <th
+                                style={{ cursor: "pointer" }}
+                                onClick={() => {
+                                    if (sortField === "department") {
+                                        setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+                                    } else {
+                                        setSortField("department");
+                                        setSortOrder("asc");
+                                    }
+                                }}
+                            >
+                                Department {sortField === "department" && (sortOrder === "asc" ? "↑" : "↓")}
+                            </th> */}
+
+                            {/* <th
+                                style={{ cursor: "pointer" }}
+                                onClick={() => {
+                                    if (sortField === "site") {
+                                        setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+                                    } else {
+                                        setSortField("site");
+                                        setSortOrder("asc");
+                                    }
+                                }}
+                            >
+                                Site {sortField === "site" && (sortOrder === "asc" ? "↑" : "↓")}
+                            </th> */}
+
+                            <th
+                                style={{ cursor: "pointer" }}
+                                onClick={() => {
+                                    if (sortField === "wages_per_day") {
+                                        setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+                                    } else {
+                                        setSortField("wages_per_day");
+                                        setSortOrder("asc");
+                                    }
+                                }}
+                            >
+                                Salary {sortField === "wages_per_day" && (sortOrder === "asc" ? "↑" : "↓")}
+                            </th>
+
+                            <th
+                                style={{ cursor: "pointer" }}
+                                onClick={() => {
+                                    if (sortField === "start_date") {
+                                        setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+                                    } else {
+                                        setSortField("start_date");
+                                        setSortOrder("asc");
+                                    }
+                                }}
+                            >
+                                Start Date {sortField === "start_date" && (sortOrder === "asc" ? "↑" : "↓")}
+                            </th>
                             <th>Action</th>
                         </tr>
                     </thead>
 
                     <tbody>
-                        {employees.map((emp, index) => (
+                        {employees?.data?.users.map((emp, index) => (
                             <tr key={emp._id}>
-                                <th scope="row">{index + 1}</th>
+                                <th scope="row">{(page - 1) * 5 + index + 1}</th>
                                 <td>
                                     <img
                                         src={profileImg}
                                         alt={emp.name}
                                         className="tbl-empImg shadow"
-                                        style={{
+                                        style={{ 
                                             cursor: "pointer",
                                             width: "40px",
                                             height: "40px",
@@ -88,12 +197,12 @@ const EmployeeTable = () => {
                                 </td>
                                 <td>{emp.username}</td>
                                 <td>{emp.device_id}</td>
-                                <td>{emp.role}</td>
-                                <td>NA</td>
-                                <td>NA</td>
-                                <td>{emp.wages_per_day}</td>
-                                <td>NA</td>
-                                <td>
+                                <td>{emp.job_title}</td>
+                                {/* <td>Department</td> */}
+                                {/* <td>site</td> */}
+                                <td>{emp.wages_per_day}/day</td>
+                                <td>{formatDate(emp.start_date)}</td>
+                                <td> 
                                     <button
                                         type="button"
                                         className="btn btn-warning text-white rounded-5 me-3"
@@ -129,6 +238,30 @@ const EmployeeTable = () => {
 
                     </tbody>
                 </table>
+
+                <div className="d-flex justify-content-between mt-3">
+
+                    <button
+                        className="btn btn-secondary rounded-5"
+                        disabled={page === 1}
+                        onClick={() => setPage((prev) => prev - 1)}
+                    >
+                        Prev
+                    </button>
+
+                    <span>
+                        Page {data?.data?.pagination?.page} of {data?.data?.pagination?.pages}
+                    </span>
+
+                    <button
+                        className="btn btn-secondary rounded-5"
+                        disabled={page === data?.data?.pagination?.pages}
+                        onClick={() => setPage((prev) => prev + 1)}
+                    >
+                        Next
+                    </button>
+
+                </div>
             </div>
 
             <ConfirmationModal

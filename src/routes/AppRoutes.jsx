@@ -8,6 +8,12 @@ import ProtectedRoute from "./ProtectedRoute"
 import Unauthorized from "../pages/Unauthorized"
 import { lazy, Suspense } from "react"
 import EmployeeList from "../features/admin/employee-management/EmployeeList"
+import Attendance from "../features/admin/attendance/Attendance"
+import MonthlyAttendance from "../features/admin/attendance/MonthlyAttendance"
+import EditAttendance from "../features/admin/attendance/components/EditAttendance"
+import LeaveRequest from "../features/admin/requests/LeaveRequest"
+import Salary from "../features/admin/Salary/Salary"
+import Archives from "../features/admin/archiveEmployees/Archives"
 
 const AdminDashboard = lazy(() =>
     import("../features/admin/dashboard/AdminDashboard")
@@ -39,6 +45,36 @@ const AppRoutes = () => {
                 <Route path="/admin/employee-list" element={
                     <Suspense fallback={<div className="loader">Loading...</div>}>
                         <EmployeeList />
+                    </Suspense>
+                } />
+                <Route path="/admin/attendance" element={
+                    <Suspense fallback={<div className="loader">Loading...</div>}>
+                        <Attendance />
+                    </Suspense>
+                } />
+                <Route path="/admin/monthly-attendance" element={
+                    <Suspense fallback={<div className="loader">Loading...</div>}>
+                        <MonthlyAttendance />
+                    </Suspense>
+                } />
+                <Route path="/admin/edit-attendance" element={
+                    <Suspense fallback={<div className="loader">Loading...</div>}>
+                        <EditAttendance />
+                    </Suspense>
+                } />
+                <Route path="/admin/leave-request" element={
+                    <Suspense fallback={<div className="loader">Loading...</div>}>
+                        <LeaveRequest />
+                    </Suspense>
+                } />
+                <Route path="/admin/salary" element={
+                    <Suspense fallback={<div className="loader">Loading...</div>}>
+                        <Salary />
+                    </Suspense>
+                } />
+                <Route path="/admin/archives" element={
+                    <Suspense fallback={<div className="loader">Loading...</div>}>
+                        <Archives />
                     </Suspense>
                 } />
             </Route>

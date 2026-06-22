@@ -3,6 +3,7 @@ import LeaveRequestsTable from "./components/LeaveRequestsTable";
 import TotalAppImg from '../../../assets/images/interviewImg.svg';
 import StatCard from "./components/StatCard";
 import { useGetAdminStatsQuery } from "../api/dashboardApi";
+import GenderPieChart from "./components/GenderPieChart";
 
 const AdminDashboard = () => {
 
@@ -37,7 +38,7 @@ const AdminDashboard = () => {
                             cardTitle="Present"
                             icon="fa-user-check"
                             iconColor="text-success"
-                            count={stats.totalPresent}
+                            count={stats.data.totalPresent}
                           />
                         </div>
                         <div className="col-md-6 col-sm-6">
@@ -45,7 +46,7 @@ const AdminDashboard = () => {
                             cardTitle="Late Coming"
                             icon="fa-clock"
                             iconColor="text-warning"
-                            count={stats.totalLateComing}
+                            count={stats.data.totalLateComing}
                           />
                         </div>
                         <div className="col-md-6 col-sm-6">
@@ -53,7 +54,7 @@ const AdminDashboard = () => {
                             cardTitle="Absent"
                             icon="fa-circle-xmark"
                             iconColor="text-danger"
-                            count={stats.totalAbsent}
+                            count={stats.data.totalAbsent}
                           />
                         </div>
                         <div className="col-md-6 col-sm-6">
@@ -61,7 +62,7 @@ const AdminDashboard = () => {
                             cardTitle="Leave Applications"
                             icon="fa-umbrella-beach"
                             iconColor="text-primary"
-                            count={stats.totalLeaveApplications}
+                            count={stats.data.totalLeaveApplications}
                           />
                         </div>
                       </div>
@@ -71,13 +72,13 @@ const AdminDashboard = () => {
                 <div className="col-md-6 mb-4">
                   <div className="card border-0 rounded-5 bg-ffffff94 h-100">
                     <div className="card-header pt-3 d-flex justify-content-between bg-transparent border-bottom-0">
-                      <h4 className="mb-0 fw-bold ">Employees Availability</h4>
-                      <h4 className="mb-0 fw-bold">423</h4>
+                      <h4 className="mb-0 fw-bold ">Total Employees</h4>
+                      {/* <h4 className="mb-0 fw-bold">423</h4> */}
                     </div>
                     <div className="card-body">
                       <div className="row h-100">
                         <div className="col-12">
-
+                          <GenderPieChart data={stats.data} />
                         </div>
                       </div>
                     </div>

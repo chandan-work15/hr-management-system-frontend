@@ -1,8 +1,23 @@
-import React from 'react'
-import profileImg from '../../../assets/images/pro-img.png'
+import React, { useEffect, useState } from 'react'
 import EmployeeTable from './components/EmployeeTable'
+import AddEmployeeModal from './components/AddEmployeeModal'
 
 const EmployeeList = () => {
+
+    const [page, setPage] = useState(1);
+    const [search, setSearch] = useState("");
+    const [debouncedSearch, setDebouncedSearch] = useState("");
+    const [sortField, setSortField] = useState("");
+    const [sortOrder, setSortOrder] = useState("asc");
+    const [roleFilter, setRoleFilter] = useState("");
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setDebouncedSearch(search);
+        }, 500);
+        return () => clearTimeout(timer);
+    }, [search]); 
+
     return (
         <div>
             <div className="container-fluid employee-page">
@@ -17,7 +32,29 @@ const EmployeeList = () => {
 
                                 <div className="card-header pt-3 d-flex justify-content-between bg-transparent border-bottom-0">
                                     <h4 className="mb-0 fw-bold">Employee List</h4>
-                                    <div>
+                                    <div className='d-flex gap-3'>
+                                        <input
+                                            type="text"
+                                            className="form-control rounded-5 w-auto"
+                                            placeholder="Search employee..."
+                                            value={search}
+                                            onChange={(e) => {
+                                                setSearch(e.target.value);
+                                                setPage(1);
+                                            }}
+                                        />
+                                        <select
+                                            className="form-select rounded-5 w-auto"
+                                            value={roleFilter}
+                                            onChange={(e) => {
+                                                setRoleFilter(e.target.value);
+                                                setPage(1);
+                                            }}
+                                        >
+                                            <option value="">All Roles</option>
+                                            <option value="Frontend Developer">Frontend Developer</option>
+                                            <option value="MERN Developer">MERN Developer</option>
+                                        </select>
                                         <button
                                             type="button"
                                             className="btn btn-dark rounded-5"
@@ -33,7 +70,16 @@ const EmployeeList = () => {
                                 </div>
 
                                 <div className="card-body">
-                                    <EmployeeTable />
+                                    <EmployeeTable
+                                        page={page}
+                                        search={debouncedSearch}
+                                        setPage={setPage}
+                                        sortField={sortField}
+                                        setSortField={setSortField}
+                                        sortOrder={sortOrder}
+                                        setSortOrder={setSortOrder}
+                                        roleFilter={roleFilter}
+                                    />
                                 </div>
 
                             </div>
@@ -41,6 +87,9 @@ const EmployeeList = () => {
                     </div>
                 </div>
             </div>
+
+            {/* Modals */}
+            <AddEmployeeModal />
 
         </div>
     )

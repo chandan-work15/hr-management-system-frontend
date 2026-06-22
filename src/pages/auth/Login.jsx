@@ -5,42 +5,58 @@ import { useLoginMutation } from '../../features/auth/authApi'
 import { setCredentials } from '../../features/auth/authSlice'
 import { useDispatch } from 'react-redux'
 import { setToken } from '../../utils/auth'
-import { decodeToken } from '../../utils/jwt'
 
 const Login = () => {
   const [form, setForm] = useState({ username: "", password: "" });
+  const [rememberMe, setRememberMe] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
-  const [login, { isLoading }] = useLoginMutation();
+  const [login] = useLoginMutation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+
     try {
       const data = await login(form).unwrap();
-      console.log("login res", data);
+      console.log("login response:", data);
 
-      const decoded = decodeToken(data.token);
-      console.log("decoded token", decoded);
+      const token = data.data.accessToken;
+      const user = data.data.user;
 
+      if (!token || !user) {
+        setError('Login failed: Invalid response');
+        return;
+      }
+
+      // Save token in localStorage or sessionStorage based on rememberMe
+      setToken(token, rememberMe);
+
+      // Update Redux store 
       dispatch(
         setCredentials({
-          token: data.token,
-          role: decoded.role
+          token: token,
+          role: user.role,
+          id: user.id
         })
       );
-      setToken(data.token);
 
-      if (decoded.role === "admin") {
+
+      // Navigate based on role
+      if (user.role === "admin") {
         navigate("/admin/dashboard", { replace: true });
       } else {
         navigate("/employee/dashboard", { replace: true });
       }
+
     } catch (err) {
+      console.error("Login error:", err);
       setError("Invalid username or password");
     }
   };
+
 
   return (
     <>
@@ -77,7 +93,7 @@ const Login = () => {
                       <div className="col-12">
                         <div className="form-floating mb-3">
                           <input
-                            type="password"
+                            type={showPassword ? "text" : "password"}
                             className="form-control"
                             name="password"
                             id="password"
@@ -87,6 +103,22 @@ const Login = () => {
                             required
                           />
                           <label htmlFor="password" className="form-label">Password</label>
+                          <span
+                            onClick={() => setShowPassword(!showPassword)}
+                            style={{
+                              position: "absolute",
+                              right: "15px",
+                              top: "50%",
+                              transform: "translateY(-50%)",
+                              cursor: "pointer",
+                              userSelect: "none"
+                            }}
+                          >
+                            <i
+                              class={`fa-solid ${showPassword ? "fa-eye-slash" : "fa-eye"} text-muted`}
+                              title={showPassword ? "Hide password" : "Show password"}
+                            ></i>
+                          </span>
                         </div>
                       </div>
                       <div className="col-12">
@@ -97,8 +129,8 @@ const Login = () => {
                               type="checkbox"
                               name="rememberMe"
                               id="rememberMe"
-                            // checked={rememberMe}
-                            // onChange={(e) => setRememberMe(e.target.checked)}
+                              checked={rememberMe}
+                              onChange={(e) => setRememberMe(e.target.checked)}
                             />
                             <label className="form-check-label text-secondary" htmlFor="rememberMe">
                               Keep me logged in
